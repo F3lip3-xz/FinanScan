@@ -46,26 +46,26 @@ const TransactionForm = ({ onAddTransaction, budget, setBudget }) => {
   const defaultCategories = ['food', 'transport', 'entertainment', 'other'];
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Agregar Transacción</h2>
+    <form onSubmit={handleSubmit} className="card">
+      <h2 className="text-xl font-semibold mb-4 text-text-dark dark:text-text-light">Agregar Transacción</h2>
       <input
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Descripción"
-        className="w-full p-2 mb-2 border rounded"
+        className="input"
       />
       <input
         type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         placeholder="Cantidad"
-        className="w-full p-2 mb-2 border rounded"
+        className="input"
       />
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
-        className="w-full p-2 mb-2 border rounded"
+        className="select"
       >
         <option value="expense">Gasto</option>
         <option value="income">Ingreso</option>
@@ -73,7 +73,7 @@ const TransactionForm = ({ onAddTransaction, budget, setBudget }) => {
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full p-2 mb-2 border rounded"
+        className="select"
       >
         {defaultCategories.map(cat => (
           <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
@@ -88,28 +88,28 @@ const TransactionForm = ({ onAddTransaction, budget, setBudget }) => {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="Nueva categoría"
-          className="w-full p-2 border rounded"
+          className="input"
         />
         <button
           onClick={handleAddCategory}
-          className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="btn-secondary"
         >
           Agregar
         </button>
       </div>
       <button
         type="submit"
-        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="btn-primary w-full"
       >
         Agregar Transacción
       </button>
       <div className="mt-4">
-        <label className="block mb-2">Presupuesto Mensual</label>
+        <label className="block mb-2 text-text-dark dark:text-text-light">Presupuesto Mensual</label>
         <input
           type="number"
           value={budget}
           onChange={(e) => setBudget(parseFloat(e.target.value) || 0)}
-          className="w-full p-2 border rounded"
+          className="input"
         />
       </div>
     </form>

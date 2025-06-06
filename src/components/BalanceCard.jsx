@@ -11,13 +11,13 @@ const BalanceCard = ({ balance, budget, totalExpenses }) => {
   }, [isOverBudget]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-      <h2 className="text-xl font-semibold mb-2">Resumen Financiero</h2>
-      <p className="text-lg">Saldo: ${balance.toFixed(2)}</p>
-      <p className="text-lg">Presupuesto: ${budget.toFixed(2)}</p>
-      <p className="text-lg">Gastos Totales: ${totalExpenses.toFixed(2)}</p>
+    <div className="card">
+      <h2 className="text-xl font-semibold mb-2 text-text-dark dark:text-text-light">Resumen Financiero</h2>
+      <p className="text-lg text-text-dark dark:text-text-light">Saldo: ${balance.toFixed(2)}</p>
+      <p className="text-lg text-text-dark dark:text-text-light">Presupuesto: ${budget.toFixed(2)}</p>
+      <p className="text-lg text-text-dark dark:text-text-light">Gastos Totales: ${totalExpenses.toFixed(2)}</p>
       {isOverBudget && (
-        <p className="text-red-500 mt-2">¡Alerta! Has excedido tu presupuesto.</p>
+        <p className="text-danger-dark dark:text-danger-light mt-2">¡Alerta! Has excedido tu presupuesto.</p>
       )}
     </div>
   );

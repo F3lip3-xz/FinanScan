@@ -3,13 +3,14 @@ import TransactionForm from './components/TransactionForm';
 import BalanceCard from './components/BalanceCard';
 import ExpenseChart from './components/ExpenseChart';
 import IncomeVsExpenseChart from './components/IncomeVsExpenseChart';
+import TransactionList from './components/TransactionList';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [transactions, setTransactions] = useState([]);
   const [budget, setBudget] = useState(0);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark'); // Por defecto modo oscuro
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   useEffect(() => {
@@ -22,11 +23,18 @@ function App() {
   useEffect(() => {
     localStorage.setItem('transactions', JSON.stringify(transactions));
     localStorage.setItem('budget', budget);
-  }, [transactions, budget]);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [transactions, budget, theme]);
 
   const addTransaction = (transaction) => {
     setTransactions([...transactions, transaction]);
     toast.success(`Transacción agregada: ${transaction.description} (${transaction.type === 'income' ? 'Ingreso' : 'Gasto'})`);
+  };
+
+  const deleteTransaction = (id) => {
+    const updatedTransactions = transactions.filter(t => t.id !== id);
+    setTransactions(updatedTransactions);
+    toast.info('Transacción eliminada.');
   };
 
   const filteredTransactions = transactions.filter(t => {
@@ -43,8 +51,7 @@ function App() {
   const balance = totalIncome - totalExpenses;
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark');
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const months = [
@@ -53,19 +60,19 @@ function App() {
   ];
 
   return (
-    <div className={`min-h-screen p-4 ${theme === 'light' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-gray-100'} transition-colors duration-300`}>
-      <h1 className="text-3xl font-bold text-center mb-6">FinanScan</h1>
+    <div className="min-h-screen p-4" data-theme={theme}>
+      <h1 className="text-3xl font-bold text-center mb-6 text-text-dark dark:text-text-light">FinanScan</h1>
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={toggleTheme}
-          className="p-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          className="btn-primary"
         >
-          {theme === 'light' ? 'Modo Oscuro' : 'Modo Claro'}
+          {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
         </button>
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-          className="p-2 border rounded"
+          className="select"
         >
           {months.map((month, index) => (
             <option key={index} value={index}>{month}</option>
@@ -79,6 +86,7 @@ function App() {
           <ExpenseChart transactions={filteredTransactions} />
           <IncomeVsExpenseChart transactions={filteredTransactions} />
         </div>
+        <TransactionList transactions={filteredTransactions} onDeleteTransaction={deleteTransaction} />
       </div>
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
